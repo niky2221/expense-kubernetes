@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: frontend
+  # this labels are replicaset labels
+  labels: 
+    app: frontend
+    tier: expense
+    purpose: deployment
+spec:
+  # modify replicas according to your case
+  replicas: 1
+  selector:
+    # replicaset use these labels to find the pods for creating desired number of replicas
+    matchLabels:
+      app: frontend
+      tier: expense
+      purpose: deployment
+  # pod template
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: expense
+        purpose: deployment
+    spec:
+      containers:
+      - name: frontend
+        image: niranjan2505/frontend:1.0.0
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend
+spec: 
+  type: LoadBalancer
+  selector: # labels are used as selectors
+    app: frontend
+    tier: expense
+    purpose: deployment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
