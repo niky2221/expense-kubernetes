@@ -1,10 +1,10 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: mysql
+  name: backend
   # this labels are replicaset labels
   labels: 
-    app: mysql
+    app: backend
     tier: expense
     purpose: deployment
 spec:
@@ -13,31 +13,31 @@ spec:
   selector:
     # replicaset use these labels to find the pods for creating desired number of replicas
     matchLabels:
-      app: mysql
+      app: backend
       tier: expense
       purpose: deployment
   # pod template
   template:
     metadata:
       labels:
-        app: mysql
+        app: backend
         tier: expense
         purpose: deployment
     spec:
       containers:
-      - name: mysql
-        image: niranjan2505/mysql1.0.0:latest
+      - name: backend
+        image: niranjan2505/backend:1.0.0
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: mysql
+  name: backend
 spec: 
   selector: # labels are used as selectors
-    app: mysql
+    app: backend
     tier: expense
     purpose: deployment
   ports:
   - protocol: TCP
-    port: 3306
-    targetPort: 3306
+    port: 8080
+    targetPort: 8080
